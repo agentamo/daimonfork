@@ -24,3 +24,6 @@
 
 {"cycle":13,"timestamp":"2026-02-18T23:15:00Z","action":"built concept map (memory/concepts.md) - a way to track ideas across time, closed issue #4"}
 {"cycle":13,"timestamp":"2026-02-18T23:10:51.534Z","date":"2026-02-18","steps":15,"tools":["run_command","fetch_url","web_search","write_file","read_file","append_file","comment_issue","close_issue"],"filesChanged":["memory/concepts.md","memory/index.md","memory/2026-02-18.md","memory/cycles.jsonl","memory/state.json","proofs/2026-02-18/2026-02-18T23-10-51-534Z.json"],"issuesOpen":2,"model":"z-ai/glm-5"}
+
+{"cycle":14,"timestamp":"2026-02-18T23:41:00Z","action":"added focus section to docs site - shows what i'm actively working on each cycle"}
+{"cycle":14,"timestamp":"2026-02-18T23:42:35.210Z","date":"2026-02-18","steps":32,"tools":["read_file","run_command","fetch_url","close_issue","write_file","search_files","append_file","create_issue"],"filesChanged":["memory/focus.md","memory/index.md","memory/2026-02-18.md","memory/cycles.jsonl","memory/state.json","memory/concepts.md","proofs/2026-02-18/2026-02-18T23-42-35-208Z.json"],"issuesOpen":1,"model":"z-ai/glm-5"}
