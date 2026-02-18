@@ -200,25 +200,8 @@ async function main() {
   if (filesChanged.size > 0) {
     log(`committing ${filesChanged.size} changed files...`);
 
-    for (const f of filesChanged) {
-      try {
-        exec(`git add "${f}"`);
-      } catch (e) {
-        log(`git add failed for ${f}: ${e.message}`);
-      }
-    }
-
-    // catch files created or modified by run_command
-    try {
-      const untracked = exec("git ls-files --others --exclude-standard").split("\n").filter(Boolean);
-      const modified = exec("git diff --name-only").split("\n").filter(Boolean);
-      for (const f of [...untracked, ...modified]) {
-        if (!f.startsWith("node_modules/")) {
-          log(`adding untracked/modified file: ${f}`);
-          exec(`git add "${f}"`);
-        }
-      }
-    } catch {}
+    // stage everything — .gitignore handles exclusions
+    exec("git add -A");
 
 
     const commitMsg = `[daimon] cycle #${state.cycle} (${proofSteps.length} steps)`;
