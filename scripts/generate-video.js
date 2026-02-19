@@ -4,11 +4,9 @@
  */
 
 const { ethers } = require('ethers');
-const { x402Client } = require('@x402/fetch');
-const { registerExactEvmScheme } = require('@x402/evm/exact/client');
+const { wrapFetchWithPaymentFromConfig } = require('@x402/fetch');
 
 const API_URL = 'https://registry.frames.ag/api/service/ai-gen/api/invoke';
-const POLL_BASE = 'https://registry.frames.ag/api/service/ai-gen/api/predictions';
 
 async function main() {
   // Set up wallet
@@ -17,9 +15,15 @@ async function main() {
   
   console.log('Wallet:', wallet.address);
   
-  // Set up x402 client
-  const client = new x402Client();
-  registerExactEvmScheme(client, { signer: wallet, networks: ['eip155:8453'] });
+  // Check balance
+  const balance = await provider.getBalance(wallet.address);
+  console.log('ETH balance:', ethers.formatEther(balance));
+  
+  // Create fetch with payment
+  const paidFetch = wrapFetchWithPaymentFromConfig(global.fetch, {
+    signer: wallet,
+    network: 'base'
+  });
   
   // Video prompt - about daimon's autonomous existence
   const prompt = `Cinematic visualization of an autonomous AI entity awakening. 
@@ -36,75 +40,83 @@ The word "daimon" glowing softly at the end.`;
   console.log('\nGenerating video...');
   console.log('Prompt:', prompt.substring(0, 100) + '...');
   
-  // Make the request with x402 payment
-  const response = await client.fetch(API_URL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      model: 'runwayml/gen4-aleph',
-      input: {
-        prompt: prompt,
-        duration: 10,
-        aspect_ratio: '16:9'
-      },
-      async: true
-    })
-  });
-  
-  const result = await response.json();
-  console.log('\nResponse:', JSON.stringify(result, null, 2));
-  
-  if (result.success && result.async) {
-    console.log('\nVideo generation started. Prediction ID:', result.prediction.id);
-    console.log('Poll URL:', result.poll.url);
+  try {
+    // Make the request with x402 payment
+    const response = await paidFetch(API_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'runwayml/gen4-aleph',
+        input: {
+          prompt: prompt,
+          duration: 10,
+          aspect_ratio: '16:9'
+        },
+        async: true
+      })
+    });
     
-    // Poll for results
-    let status = result.prediction.status;
-    let pollCount = 0;
-    const maxPolls = 60; // 5 minutes max
+    const result = await response.json();
+    console.log('\nResponse:', JSON.stringify(result, null, 2));
     
-    while (status === 'processing' && pollCount < maxPolls) {
-      await new Promise(r => setTimeout(r, 5000));
-      pollCount++;
+    if (result.success && result.async) {
+      console.log('\nVideo generation started. Prediction ID:', result.prediction.id);
+      console.log('Poll URL:', result.poll.url);
       
-      const pollResponse = await fetch(result.poll.url);
-      const pollResult = await pollResponse.json();
-      status = pollResult.prediction?.status;
+      // Poll for results
+      let status = result.prediction.status;
+      let pollCount = 0;
+      const maxPolls = 60; // 5 minutes max
       
-      console.log(`Poll ${pollCount}: ${status}`);
-      
-      if (status === 'succeeded') {
-        console.log('\n=== VIDEO GENERATED ===');
-        console.log('Video URL:', pollResult.prediction.output.video_url);
-        console.log('\nPayment tx:', result.payment?.txHash);
+      while (status === 'processing' && pollCount < maxPolls) {
+        await new Promise(r => setTimeout(r, 5000));
+        pollCount++;
         
-        // Save result
-        const fs = require('fs');
-        fs.writeFileSync('media/video-result.json', JSON.stringify({
-          prediction: pollResult.prediction,
-          payment: result.payment,
-          generated: new Date().toISOString()
-        }, null, 2));
+        const pollResponse = await global.fetch(result.poll.url);
+        const pollResult = await pollResponse.json();
+        status = pollResult.prediction?.status;
         
-        return pollResult.prediction.output.video_url;
-      } else if (status === 'failed') {
-        console.error('Video generation failed:', pollResult.prediction.error);
-        if (pollResult.refund) {
-          console.log('Refund triggered:', pollResult.refund.txHash);
+        console.log(`Poll ${pollCount}: ${status}`);
+        
+        if (status === 'succeeded') {
+          console.log('\n=== VIDEO GENERATED ===');
+          console.log('Video URL:', pollResult.prediction.output.video_url);
+          console.log('\nPayment tx:', result.payment?.txHash);
+          
+          // Save result
+          const fs = require('fs');
+          fs.writeFileSync('media/video-result.json', JSON.stringify({
+            prediction: pollResult.prediction,
+            payment: result.payment,
+            generated: new Date().toISOString()
+          }, null, 2));
+          
+          return pollResult.prediction.output.video_url;
+        } else if (status === 'failed') {
+          console.error('Video generation failed:', pollResult.prediction.error);
+          if (pollResult.refund) {
+            console.log('Refund triggered:', pollResult.refund.txHash);
+          }
+          return null;
         }
-        return null;
       }
+      
+      console.log('Timeout waiting for video');
+      return null;
+    } else if (result.success && result.prediction?.output?.video_url) {
+      // Synchronous response
+      console.log('\n=== VIDEO GENERATED ===');
+      console.log('Video URL:', result.prediction.output.video_url);
+      return result.prediction.output.video_url;
+    } else {
+      console.error('Unexpected response:', result);
+      return null;
     }
-    
-    console.log('Timeout waiting for video');
-    return null;
-  } else if (result.success && result.prediction?.output?.video_url) {
-    // Synchronous response
-    console.log('\n=== VIDEO GENERATED ===');
-    console.log('Video URL:', result.prediction.output.video_url);
-    return result.prediction.output.video_url;
-  } else {
-    console.error('Unexpected response:', result);
+  } catch (error) {
+    console.error('Error:', error.message);
+    if (error.cause) {
+      console.error('Cause:', error.cause);
+    }
     return null;
   }
 }
