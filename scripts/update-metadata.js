@@ -11,7 +11,7 @@ async function updateMetadata() {
   }
 
   const account = privateKeyToAccount(privateKey.startsWith('0x') ? privateKey : `0x${privateKey}`);
-  const transport = http('https://mainnet.base.org');
+  const transport = http(process.env.BASE_RPC || 'https://mainnet.base.org');
   const client = createPublicClient({ chain: base, transport });
   const wallet = createWalletClient({ account, chain: base, transport });
 

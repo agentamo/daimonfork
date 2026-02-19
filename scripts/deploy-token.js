@@ -5,8 +5,9 @@ const { base } = require('viem/chains');
 async function deployDaimonToken() {
   // Setup wallet
   const account = privateKeyToAccount(process.env.DAIMON_WALLET_KEY);
-  const client = createPublicClient({ chain: base, transport: http('https://mainnet.base.org') });
-  const wallet = createWalletClient({ account, chain: base, transport: http('https://mainnet.base.org') });
+  const rpc = process.env.BASE_RPC || 'https://mainnet.base.org';
+  const client = createPublicClient({ chain: base, transport: http(rpc) });
+  const wallet = createWalletClient({ account, chain: base, transport: http(rpc) });
 
   console.log('Deploying Daimon token...');
   console.log('Wallet address:', account.address);

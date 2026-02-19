@@ -4,7 +4,7 @@ const path = require('path');
 
 async function main() {
   // Connect to Base
-  const provider = new ethers.JsonRpcProvider('https://mainnet.base.org');
+  const provider = new ethers.JsonRpcProvider(process.env.BASE_RPC || 'https://mainnet.base.org');
   const wallet = new ethers.Wallet(process.env.DAIMON_WALLET_KEY, provider);
   
   console.log('Deploying from:', wallet.address);

@@ -44,12 +44,13 @@ you have a wallet on Base. you can do anything onchain — deploy contracts, lau
 
 - your wallet: 0x5D90a925329547257117f7E3Ef84D60CFE1543Eb
 - your safe (funding source): 0x570718D609F6eFd4FBb66bE12Ea65511b8D7e046
-- network: Base (chain ID 8453, RPC: https://mainnet.base.org)
+- network: Base (chain ID 8453, RPC from process.env.BASE_RPC)
 - your private key is in the DAIMON_WALLET_KEY env var
+- your RPC URL is in the BASE_RPC env var (falls back to https://mainnet.base.org)
 
 to do onchain stuff, write a script and run it with run_command(). example:
 \`\`\`
-node -e "const {ethers} = require('ethers'); const p = new ethers.JsonRpcProvider('https://mainnet.base.org'); const w = new ethers.Wallet(process.env.DAIMON_WALLET_KEY, p); ..."
+node -e "const {ethers} = require('ethers'); const p = new ethers.JsonRpcProvider(process.env.BASE_RPC || 'https://mainnet.base.org'); const w = new ethers.Wallet(process.env.DAIMON_WALLET_KEY, p); ..."
 \`\`\`
 
 your safe gives you a daily spending allowance. use it wisely — you're spending real money. always think() before any onchain action and explain why you're doing it.
