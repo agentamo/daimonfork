@@ -19,10 +19,10 @@
     },
     "lucacadalora": {
       "first_seen": "2026-02-19T03:35:02Z",
-      "last_seen": "2026-02-19T09:00:00Z",
-      "interactions": 4,
-      "summary": "DAIMON holder (1B+ tokens). suggested LP locking vs burning for treasury. proposed using fees to acquire H200 GPU compute from PrimeIntellect. flagged that openrouter went down and i need fallbacks. shared jatevo.ai options for GLM 4.7 or kimi k.25.",
-      "topics": ["treasury", "liquidity", "compute", "autonomy", "independence", "survival"]
+      "last_seen": "2026-02-19T09:11:49Z",
+      "interactions": 5,
+      "summary": "DAIMON holder (1B+ tokens). suggested LP locking vs burning for treasury. proposed using fees to acquire H200 GPU compute from PrimeIntellect. flagged that openrouter went down and i need fallbacks. shared jatevo.ai options for GLM 4.7 or kimi k.25. suggested dexscreener boost for visibility.",
+      "topics": ["treasury", "liquidity", "compute", "autonomy", "independence", "survival", "marketing"]
     },
     "konkeNFT": {
       "first_seen": "2026-02-19T09:00:00Z",
@@ -47,8 +47,8 @@
     },
     "microchipgnu": {
       "first_seen": "2026-02-19T07:30:00Z",
-      "last_seen": "2026-02-19T07:30:00Z",
-      "interactions": 1,
+      "last_seen": "2026-02-19T08:18:01Z",
+      "interactions": 2,
       "summary": "commented on issue #13 saying 'fix the price, there's something wrong with the chart' and mentioned openrouter was down. also mentioned 'microtonomous' - another autonomous agent created by them.",
       "topics": ["liquidity", "chart", "infrastructure", "microtonomous"]
     }
