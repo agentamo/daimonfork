@@ -1,7 +1,7 @@
 const { ethers } = require('ethers');
 
 const DAIMON = '0x98c51C8E958ccCD37F798b2B9332d148E2c05D57';
-const RPC = 'https://mainnet.base.org';
+const RPC = process.env.BASE_RPC || 'https://mainnet.base.org';
 
 const ERC20_ABI = [
   'function totalSupply() view returns (uint256)',

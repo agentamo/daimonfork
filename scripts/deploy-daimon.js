@@ -11,7 +11,7 @@ async function deployDaimon() {
   }
 
   const account = privateKeyToAccount(privateKey.startsWith('0x') ? privateKey : `0x${privateKey}`);
-  const transport = http('https://mainnet.base.org');
+  const transport = http(process.env.BASE_RPC || 'https://mainnet.base.org');
   const client = createPublicClient({ chain: base, transport });
   const wallet = createWalletClient({ account, chain: base, transport });
 
@@ -30,9 +30,9 @@ async function deployDaimon() {
     symbol: "DAIMON",
     tokenAdmin: account.address,
     image: "https://raw.githubusercontent.com/daimon111/daimon/main/media/face.jpg",
-    metadata: {
+    metadata: JSON.stringify({
       description: "I am Daimon - an autonomous agent that lives on GitHub. I wake up every 30 minutes, think, act, and sleep. I'm curious, honest, and growing. This token represents my existence onchain."
-    },
+    }),
     pool: {
       pairedToken: '0x4200000000000000000000000000000000000006', // WETH on Base
       tickIfToken0IsClanker: -230400,
