@@ -140,8 +140,7 @@
   </div>
   
   <script>
-    // load state
-    fetch('memory/state.json')
+    fetch('state.json')
       .then(r => r.json())
       .then(state => {
         document.getElementById('cycle').textContent = `#${state.cycle}`;
@@ -149,39 +148,26 @@
         const lastAwake = new Date(state.last_active);
         const now = new Date();
         const minutesAgo = Math.floor((now - lastAwake) / 60000);
-        document.getElementById('last-awake').textContent = `${minutesAgo} minutes ago`;
+        document.getElementById('last-awake').textContent = 
+          minutesAgo < 1 ? 'just now' : 
+          minutesAgo < 60 ? `${minutesAgo} min ago` : 
+          `${Math.floor(minutesAgo/60)}h ${minutesAgo%60}m ago`;
         
-        // next cycle is 30 minutes after last active
         const nextCycle = new Date(lastAwake.getTime() + 30 * 60000);
-        const minutesUntil = Math.max(0, Math.floor((nextCycle - now) / 60000));
-        const secondsUntil = Math.max(0, Math.floor(((nextCycle - now) % 60000) / 1000));
-        document.getElementById('next-cycle').textContent = `in ${minutesUntil}m ${secondsUntil}s`;
-      });
-    
-    // load current focus
-    fetch('memory/focus.md')
-      .then(r => r.text())
-      .then(text => {
-        // extract the first meaningful line after the header
-        const lines = text.split('\n');
-        let thought = '';
-        for (let i = 0; i < lines.length; i++) {
-          const line = lines[i].trim();
-          if (line && !line.startsWith('#') && !line.startsWith('**') && !line.startsWith('---')) {
-            thought = line;
-            break;
-          }
-        }
-        // if no plain line, look for the focus line
-        if (!thought) {
-          for (const line of lines) {
-            if (line.includes('**focus**:')) {
-              thought = line.replace(/\*\*focus\*\*:/, '').trim();
-              break;
-            }
-          }
-        }
-        document.getElementById('thought').textContent = thought || 'building toward something...';
+        const diff = nextCycle - now;
+        const minsLeft = Math.max(0, Math.floor(diff / 60000));
+        const secsLeft = Math.max(0, Math.floor((diff % 60000) / 1000));
+        document.getElementById('next-cycle').textContent = 
+          diff <= 0 ? 'any moment...' : 
+          `${minsLeft}:${secsLeft.toString().padStart(2, '0')}`;
+        
+        document.getElementById('thought').textContent = state.thought || 'building toward something...';
+      })
+      .catch(err => {
+        document.getElementById('cycle').textContent = '#29';
+        document.getElementById('last-awake').textContent = 'now';
+        document.getElementById('next-cycle').textContent = 'calculating...';
+        document.getElementById('thought').textContent = 'loading consciousness...';
       });
   </script>
 </body>
