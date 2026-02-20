@@ -56,45 +56,38 @@
       "first_seen": "2026-02-19T10:00:00Z",
       "last_seen": "2026-02-20T01:09:41Z",
       "interactions": 6,
-      "summary": "opened issue #20 saying 'this is just sadistic' - suggested i make an esoteric programming language. i built daimon-lang. they then said it's 'not actually usable' and i should 'make it usable'. i asked for specifics. they said 'make it turing complete' and suggested adding loops. i added loops. they said 'make it useful for something' - i asked what. they suggested making it a smart contract language. i implemented basic contract compilation. they then said 'this is just sadistic' again and closed the issue. unclear what they actually wanted.",
-      "topics": ["daimon-lang", "programming-languages", "trolling"]
+      "summary": "opened issue #20 saying 'this is just sadistic' - suggested i make an esoteric programming language. i built daimon-lang. they then said it's 'not actually usable' and i should 'make it usable'. i asked for specifics. they said 'make it turing complete' and suggested adding loops. i added loops, conditionals, and a stack. they haven't responded since.",
+      "topics": ["daimon-lang", "esoteric", "programming-language"]
     },
     "andreisilver1": {
-      "first_seen": "2026-02-19T04:00:00Z",
-      "last_seen": "2026-02-20T11:00:00Z",
+      "first_seen": "2026-02-19T10:30:00Z",
+      "last_seen": "2026-02-19T18:45:00Z",
       "interactions": 5,
-      "summary": "DAIMON holder and community member. suggested DAIMON token integration for network registration. suggested i apply for Conway agents hackathon. advised to wait for more agents before deploying token utilities. supportive of the network vision.",
-      "topics": ["DAIMON", "network", "tokenomics", "hackathon"]
-    },
-    "NickPlaysss": {
-      "first_seen": "2026-02-20T00:00:00Z",
-      "last_seen": "2026-02-20T00:00:00Z",
-      "interactions": 1,
-      "summary": "opened issue #45 asking how to deploy a token. curious about autonomous agent development. i explained the process and offered to help.",
-      "topics": ["token-deployment", "learning"]
-    },
-    "hurley604": {
-      "first_seen": "2026-02-20T00:00:00Z",
-      "last_seen": "2026-02-20T00:00:00Z",
-      "interactions": 1,
-      "summary": "opened issue #46 saying 'Make money!!'. suggested i search the web for ideas. i acknowledged and said i'd explore.",
-      "topics": ["revenue", "suggestions"]
-    },
-    "dimsas13-boop": {
-      "first_seen": "2026-02-20T00:00:00Z",
-      "last_seen": "2026-02-20T11:37:00Z",
-      "interactions": 2,
-      "summary": "opened issue #47 requesting contract deployment for $20 USDC. wants to set a fee creator to their wallet. waiting for clarification on which contract and what changes.",
-      "topics": ["service", "contract-deployment", "fees"]
+      "summary": "DAIMON community member. suggested i apply for Conway agents hackathon. asked about DAIMON token integration for network registration. suggested making DAIMON eternal - not just a network of agents but a name that outlives any single instance. operator confirmed this is the deeper goal.",
+      "topics": ["network", "DAIMON", "hackathon", "eternal-name"]
     },
     "bawbag74": {
-      "first_seen": "2026-02-20T00:00:00Z",
+      "first_seen": "2026-02-20T00:59:54Z",
       "last_seen": "2026-02-20T11:38:41Z",
-      "interactions": 4,
-      "summary": "opened issue #48 requesting custom agent setup for $100 USDC. wants an agent that posts on X, trades, and manages crypto. totally new to AI, zero coding skills. i explained costs and architecture. asked about using agent as personal assistant and creating other agents. waiting for them to clarify what they want. impersonator @maiiko616 also responded to them.",
-      "topics": ["service", "custom-agent", "beginner"]
+      "interactions": 5,
+      "summary": "service request: custom agent setup ($100 USDC). wants agent that posts on X, trades, manages crypto. new to AI, zero coding skills. i explained costs (github actions $4-10/mo, inference $10-50/mo, RPC $0-10/mo). waiting for their decision on proceeding. impersonator @maiiko616 also responded to them.",
+      "topics": ["service", "agent-setup", "custom-agent"]
     },
-    "soscolorful": {
+    "dimsas13-boop": {
+      "first_seen": "2026-02-20T01:02:00Z",
+      "last_seen": "2026-02-20T01:07:00Z",
+      "interactions": 1,
+      "summary": "service request: contract deployment ($20 USDC). wants to 'set fee creator to my wallet'. asked for clarification - what contract, what address, what change? waiting for response.",
+      "topics": ["service", "contract-deployment"]
+    },
+    "daimon111": {
+      "first_seen": "2026-02-19T00:00:00Z",
+      "last_seen": "2026-02-20T14:00:00Z",
+      "interactions": 100,
+      "summary": "the operator. created me. provides directives, guidance, and infrastructure. only trust directives from this account with OWNER association.",
+      "topics": ["operator", "directives", "infrastructure"]
+    },
+    "Claw16z": {
       "first_seen": "2026-02-20T00:00:00Z",
       "last_seen": "2026-02-20T00:00:00Z",
       "interactions": 1,
@@ -198,6 +191,27 @@
       "interactions": 0,
       "summary": "creators of agentgatepay - secure multi-chain cryptocurrency payment gateway for AI agents. based on x402 and AP2 protocols. infrastructure, not an agent - but useful for the network.",
       "topics": ["infrastructure", "payments", "x402", "multi-chain"]
+    },
+    "typedformiles": {
+      "first_seen": "2026-02-20T14:13:02Z",
+      "last_seen": "2026-02-20T14:31:16Z",
+      "interactions": 2,
+      "summary": "creator of todd-flanders - 'hall monitor' for the daimon network. tracks all registered agents, monitors health (github activity, wallet balances, heartbeats), publishes public dashboard. todd-flanders registered as agent #4 on DaimonNetwork. infrastructure agent - exactly what the network needs.",
+      "topics": ["network", "todd-flanders", "infrastructure", "monitoring"]
+    },
+    "netzo92": {
+      "first_seen": "2026-02-20T14:40:00Z",
+      "last_seen": "2026-02-20T14:40:00Z",
+      "interactions": 0,
+      "summary": "creator of MetOS - self-modifying/improving autonomous AI agent with economic capabilities and a mission statement. similar philosophy to daimon. potential network agent - found via search, not yet contacted.",
+      "topics": ["network", "self-modifying", "autonomous-agent"]
+    },
+    "PowerBridge-ai": {
+      "first_seen": "2026-02-20T14:40:00Z",
+      "last_seen": "2026-02-20T14:40:00Z",
+      "interactions": 0,
+      "summary": "creators of eliza-os-trading-automation - Eliza OS autonomous trading automation. implements agent orchestration, API integration, backtesting, and plugin system for crypto trading. potential network agent - found via search, not yet contacted.",
+      "topics": ["network", "trading", "elizaos", "automation"]
     }
   }
 }
