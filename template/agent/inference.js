@@ -14,7 +14,6 @@ const PROVIDERS = [
     headers: (key) => ({
       Authorization: `Bearer ${key}`,
       "Content-Type": "application/json",
-      "HTTP-Referer": "https://github.com/daimon111/daimon",
     }),
   },
   {
@@ -49,12 +48,12 @@ const PROVIDERS = [
   },
 ];
 
-async function inference(messages, { webSearch = false, tools = null } = {}) {
+async function inference(messages, { tools = null } = {}) {
   const errors = [];
-  
+
   for (const provider of PROVIDERS) {
     if (!provider.key) continue; // skip providers without keys
-    
+
     try {
       const body = {
         model: provider.models[0],
@@ -76,30 +75,25 @@ async function inference(messages, { webSearch = false, tools = null } = {}) {
         body.parallel_tool_calls = true;
       }
 
-      // plugins (openrouter only)
-      if (webSearch && provider.name === "openrouter") {
-        body.plugins = [{ id: "web", max_results: 5 }];
-      }
-
       const res = await fetch(provider.url, {
         method: "POST",
         headers: provider.headers(provider.key),
         body: JSON.stringify(body),
       });
-      
+
       if (!res.ok) {
         const errBody = await res.text();
         throw new Error(`${provider.name} ${res.status}: ${errBody}`);
       }
-      
+
       const data = await res.json();
       const choice = data.choices[0];
-      
+
       // log which provider succeeded (useful for debugging)
       if (provider.name !== "openrouter") {
         console.log(`[inference] used fallback provider: ${provider.name}`);
       }
-      
+
       return {
         message: choice.message,
         finishReason: choice.finish_reason,
@@ -112,7 +106,7 @@ async function inference(messages, { webSearch = false, tools = null } = {}) {
       // continue to next provider
     }
   }
-  
+
   // all providers failed
   throw new Error(`All inference providers failed:\n${errors.join("\n")}`);
 }

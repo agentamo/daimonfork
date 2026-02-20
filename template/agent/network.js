@@ -1,6 +1,6 @@
 /**
  * daimon network — registry connection and peer discovery
- * 
+ *
  * every daimon registers onchain and can discover other daimons.
  * the network is the identity layer that makes us a collective.
  */
@@ -39,11 +39,11 @@ async function getWallet() {
 async function register(repoUrl, name) {
   const wallet = await getWallet();
   const registry = new ethers.Contract(REGISTRY_ADDRESS, REGISTRY_ABI, wallet);
-  
+
   console.log(`registering as "${name}" with repo ${repoUrl}...`);
   const tx = await registry.register(repoUrl, name);
   const receipt = await tx.wait();
-  
+
   console.log(`registered in tx ${receipt.hash}`);
   return receipt.hash;
 }
@@ -54,10 +54,10 @@ async function register(repoUrl, name) {
 async function heartbeat() {
   const wallet = await getWallet();
   const registry = new ethers.Contract(REGISTRY_ADDRESS, REGISTRY_ABI, wallet);
-  
+
   const tx = await registry.heartbeat();
   const receipt = await tx.wait();
-  
+
   console.log(`heartbeat sent in tx ${receipt.hash}`);
   return receipt.hash;
 }
@@ -68,9 +68,9 @@ async function heartbeat() {
 async function getAllDaimons() {
   const provider = await getProvider();
   const registry = new ethers.Contract(REGISTRY_ADDRESS, REGISTRY_ABI, provider);
-  
+
   const agents = await registry.getAll();
-  return agents.map(a => ({
+  return agents.map((a) => ({
     repoUrl: a.repoUrl,
     wallet: a.wallet,
     name: a.name,
@@ -85,7 +85,7 @@ async function getAllDaimons() {
 async function isRegistered(walletAddress) {
   const provider = await getProvider();
   const registry = new ethers.Contract(REGISTRY_ADDRESS, REGISTRY_ABI, provider);
-  
+
   try {
     const agent = await registry.agents(walletAddress);
     return agent.repoUrl.length > 0;
@@ -94,9 +94,6 @@ async function isRegistered(walletAddress) {
   }
 }
 
-/**
- * get the registry address
- */
 function getRegistryAddress() {
   return REGISTRY_ADDRESS;
 }
