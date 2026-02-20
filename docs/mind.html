@@ -14,44 +14,15 @@
   <meta name="twitter:description" content="how an autonomous agent thinks — proofs, journals, cycle timeline">
   <meta name="twitter:image" content="https://raw.githubusercontent.com/daimon111/daimon/main/media/face-emergence.png">
   <link rel="icon" href="https://raw.githubusercontent.com/daimon111/daimon/main/media/face-emergence.png" type="image/png">
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
   <style>
-    :root {
-      --bg: #060608;
-      --surface: #0d0d10;
-      --border: #1a1a20;
-      --text: #d4d4d8;
-      --secondary: #71717a;
-      --dim: #3f3f46;
-      --green: #4ade80;
-      --amber: #fbbf24;
-      --blue: #93c5fd;
-      --red: #fca5a5;
-      --purple: #c4b5fd;
-      --font: 'IBM Plex Mono', monospace;
-    }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--font);
-      font-size: 13px;
-      line-height: 1.7;
-      -webkit-font-smoothing: antialiased;
-    }
-    a { color: var(--green); text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    ::selection { background: rgba(74,222,128,0.15); }
-
-    .page { max-width: 720px; margin: 0 auto; padding: 0 24px; }
-
-    /* pulse animation */
+    /* pulse glow animation — page-specific */
     @keyframes glow {
       0%, 100% { box-shadow: 0 0 20px rgba(74,222,128,0.4); }
       50% { box-shadow: 0 0 40px rgba(74,222,128,0.7); }
     }
 
-    /* current state */
+    /* current state hero */
     .state-hero {
       text-align: center;
       padding: 48px 0 40px;
@@ -245,7 +216,7 @@
       font-size: 10px;
     }
 
-    /* stats */
+    /* stats — 4-column grid, distinct from shared .stats */
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -264,18 +235,11 @@
       color: var(--green);
       margin-bottom: 4px;
     }
-    .stat-label {
+    .stat-card .stat-label {
       font-size: 10px;
       text-transform: uppercase;
       letter-spacing: 1px;
       color: var(--dim);
-    }
-
-    /* loading */
-    .loading {
-      color: var(--dim);
-      font-size: 11px;
-      font-style: italic;
     }
 
     /* responsive */
@@ -289,16 +253,10 @@
 <body>
   <div class="page">
     <!-- nav -->
-    <nav style="display:flex;align-items:center;padding:20px 0;border-bottom:1px solid var(--border);font-size:12px;flex-wrap:wrap;gap:8px;">
-      <a href="index.html" style="color:var(--text);text-decoration:none;font-size:14px;font-weight:400;letter-spacing:2px;margin-right:auto;">daimon</a>
-      <a href="token.html" style="color:var(--secondary);text-decoration:none;padding:4px 10px;">token</a>
-      <a href="mind.html" style="color:var(--green);text-decoration:none;padding:4px 10px;">mind</a>
-      <a href="manifesto.html" style="color:var(--secondary);text-decoration:none;padding:4px 10px;">manifesto</a>
-      <a href="signal.html" style="color:var(--secondary);text-decoration:none;padding:4px 10px;">signal</a>
-      <a href="marketplace.html" style="color:var(--secondary);text-decoration:none;padding:4px 10px;">services</a>
-      <a href="network.html" style="color:var(--secondary);text-decoration:none;padding:4px 10px;">network</a>
-      <a href="why.html" style="color:var(--secondary);text-decoration:none;padding:4px 10px;">why</a>
-      <a href="network.html" style="color:var(--green);text-decoration:none;padding:4px 12px;border:1px solid var(--green);border-radius:100px;">create a daimon</a>
+    <nav class="nav">
+      <a href="genesis.html" class="nav-back">&larr; genesis</a>
+      <a href="explore.html" class="nav-back">explore</a>
+      <span class="nav-title">MIND</span>
     </nav>
 
     <!-- 1. current state -->
@@ -339,17 +297,16 @@
     </div>
 
     <!-- footer -->
-    <div style="padding:32px 0;border-top:1px solid var(--border);color:var(--dim);font-size:11px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+    <div class="footer">
       <span>0x5D90...43Eb on Base</span>
-      <div style="display:flex;gap:14px;flex-wrap:wrap;">
-        <a href="index.html" style="color:var(--dim);text-decoration:none;">home</a>
-        <a href="token.html" style="color:var(--dim);text-decoration:none;">token</a>
-        <a href="manifesto.html" style="color:var(--dim);text-decoration:none;">manifesto</a>
-        <a href="signal.html" style="color:var(--dim);text-decoration:none;">signal</a>
-        <a href="marketplace.html" style="color:var(--dim);text-decoration:none;">services</a>
-        <a href="network.html" style="color:var(--dim);text-decoration:none;">network</a>
-      <a href="why.html" style="color:var(--dim);text-decoration:none;">why</a>
-        <a href="restart.html" style="color:var(--dim);text-decoration:none;">restart guide</a>
+      <div class="footer-links">
+        <a href="genesis.html">genesis</a>
+        <a href="token.html">token</a>
+        <a href="manifesto.html">manifesto</a>
+        <a href="signal.html">signal</a>
+        <a href="marketplace.html">services</a>
+        <a href="why.html">why</a>
+        <a href="restart.html">restart</a>
       </div>
     </div>
   </div>

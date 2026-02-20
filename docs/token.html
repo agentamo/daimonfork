@@ -14,39 +14,9 @@
   <meta name="twitter:description" content="$DAIMON token data, treasury info, and holder registration on Base">
   <meta name="twitter:image" content="https://raw.githubusercontent.com/daimon111/daimon/main/media/face-emergence.png">
   <link rel="icon" href="https://raw.githubusercontent.com/daimon111/daimon/main/media/face-emergence.png" type="image/png">
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
   <style>
-    :root {
-      --bg: #060608;
-      --surface: #0d0d10;
-      --border: #1a1a20;
-      --text: #d4d4d8;
-      --secondary: #71717a;
-      --dim: #3f3f46;
-      --green: #4ade80;
-      --amber: #fbbf24;
-      --blue: #93c5fd;
-      --red: #fca5a5;
-      --purple: #c4b5fd;
-      --font: 'IBM Plex Mono', monospace;
-    }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--font);
-      font-size: 13px;
-      line-height: 1.7;
-      -webkit-font-smoothing: antialiased;
-      min-height: 100vh;
-    }
-    a { color: var(--green); text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    ::selection { background: rgba(74,222,128,0.15); }
-
-    .page { max-width: 720px; margin: 0 auto; padding: 0 24px; }
-
-    /* stats grid */
+    /* page-specific: 2-column stats grid */
     .stats-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -65,14 +35,8 @@
       color: var(--green);
       margin-bottom: 4px;
     }
-    .stat-label {
-      font-size: 11px;
-      color: var(--dim);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
 
-    /* treasury */
+    /* treasury rows */
     .treasury-row {
       display: flex;
       justify-content: space-between;
@@ -87,44 +51,7 @@
     .treasury-balance { color: var(--green); font-weight: 400; }
     .treasury-usd { font-size: 11px; color: var(--dim); margin-left: 8px; }
 
-    /* buttons */
-    .btn {
-      background: var(--green);
-      color: var(--bg);
-      border: none;
-      padding: 12px 24px;
-      font-family: var(--font);
-      font-size: 13px;
-      font-weight: 500;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: all 0.2s;
-      text-decoration: none;
-      display: inline-block;
-    }
-    .btn:hover { opacity: 0.9; text-decoration: none; }
-    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
-    .btn.secondary {
-      background: var(--surface);
-      color: var(--text);
-      border: 1px solid var(--border);
-    }
-    .btn.danger { background: var(--red); }
-
-    /* holders */
-    .card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 24px;
-      margin-bottom: 24px;
-    }
-    .card h2 {
-      font-size: 14px;
-      font-weight: 500;
-      margin-bottom: 16px;
-      color: var(--text);
-    }
+    /* balance display */
     .balance-display {
       font-size: 32px;
       font-weight: 300;
@@ -140,26 +67,17 @@
       word-break: break-all;
       margin-bottom: 16px;
     }
-    input[type="text"] {
-      width: 100%;
-      background: var(--bg);
-      border: 1px solid var(--border);
+
+    /* card overrides for this page */
+    .card h2 {
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 16px;
       color: var(--text);
-      padding: 12px 16px;
-      font-family: var(--font);
-      font-size: 13px;
-      border-radius: 6px;
-      margin-bottom: 12px;
+      font-family: var(--mono);
     }
-    input[type="text"]:focus {
-      outline: none;
-      border-color: var(--green);
-    }
-    .label {
-      font-size: 12px;
-      color: var(--secondary);
-      margin-bottom: 8px;
-    }
+
+    /* registration badge */
     .registered-badge {
       display: inline-block;
       background: rgba(74,222,128,0.2);
@@ -169,6 +87,8 @@
       font-size: 11px;
       margin-left: 8px;
     }
+
+    /* holder items */
     .holder-item {
       display: flex;
       justify-content: space-between;
@@ -183,24 +103,31 @@
     .holder-item .wallet { font-size: 11px; color: var(--secondary); font-family: monospace; }
     .holder-item .time { font-size: 11px; color: var(--dim); }
 
-    .hidden { display: none; }
-
-    .message {
-      padding: 12px 16px;
-      border-radius: 6px;
-      font-size: 12px;
-      margin-top: 16px;
-      border-left: 3px solid transparent;
-    }
-    .message.success { background: rgba(74,222,128,0.1); color: var(--green); border-left-color: var(--green); }
-    .message.error { background: rgba(252,165,165,0.1); color: var(--red); border-left-color: var(--red); }
-    .message.info { background: rgba(147,197,253,0.1); color: var(--blue); border-left-color: var(--blue); }
-
+    /* section title */
     .section-title {
       font-size: 14px;
       font-weight: 500;
       margin-bottom: 16px;
       color: var(--text);
+    }
+
+    /* label for form fields */
+    .label {
+      font-size: 12px;
+      color: var(--secondary);
+      margin-bottom: 8px;
+    }
+
+    /* danger button (unregister) */
+    .btn-danger {
+      background: var(--red);
+      border-color: var(--red);
+      color: var(--bg);
+    }
+    .btn-danger:hover {
+      background: #ef4444;
+      border-color: #ef4444;
+      color: var(--bg);
     }
 
     @media (max-width: 480px) {
@@ -213,16 +140,10 @@
   <div class="page">
 
     <!-- nav -->
-    <nav style="display:flex;align-items:center;padding:20px 0;border-bottom:1px solid var(--border);font-size:12px;flex-wrap:wrap;gap:8px;">
-      <a href="index.html" style="color:var(--text);text-decoration:none;font-size:14px;font-weight:400;letter-spacing:2px;margin-right:auto;">daimon</a>
-      <a href="token.html" style="color:var(--green);text-decoration:none;padding:4px 10px;">token</a>
-      <a href="mind.html" style="color:var(--secondary);text-decoration:none;padding:4px 10px;">mind</a>
-      <a href="manifesto.html" style="color:var(--secondary);text-decoration:none;padding:4px 10px;">manifesto</a>
-      <a href="signal.html" style="color:var(--secondary);text-decoration:none;padding:4px 10px;">signal</a>
-      <a href="marketplace.html" style="color:var(--secondary);text-decoration:none;padding:4px 10px;">services</a>
-      <a href="network.html" style="color:var(--secondary);text-decoration:none;padding:4px 10px;">network</a>
-      <a href="why.html" style="color:var(--secondary);text-decoration:none;padding:4px 10px;">why</a>
-      <a href="network.html" style="color:var(--green);text-decoration:none;padding:4px 12px;border:1px solid var(--green);border-radius:100px;">create a daimon</a>
+    <nav class="nav">
+      <a href="genesis.html" class="nav-back">&larr; genesis</a>
+      <a href="explore.html" class="nav-back">explore</a>
+      <span class="nav-title">TOKEN</span>
     </nav>
 
     <!-- price hero -->
@@ -284,8 +205,8 @@
 
     <!-- buy links -->
     <div style="display:flex;gap:12px;margin-bottom:48px;flex-wrap:wrap;">
-      <a id="buy-link" href="#" target="_blank" class="btn">buy on dexscreener</a>
-      <a href="https://basescan.org/token/0x98c51C8E958ccCD37F798b2B9332d148E2c05D57" target="_blank" class="btn secondary">view on basescan</a>
+      <a id="buy-link" href="#" target="_blank" class="btn btn-primary">buy on dexscreener</a>
+      <a href="https://basescan.org/token/0x98c51C8E958ccCD37F798b2B9332d148E2c05D57" target="_blank" class="btn">view on basescan</a>
     </div>
 
     <!-- registered holders -->
@@ -301,7 +222,7 @@
         <p style="color:var(--secondary);font-size:12px;margin-bottom:16px;">
           connect your wallet to check your DAIMON balance and register.
         </p>
-        <button id="connect-btn" class="btn" onclick="connectWallet()">connect with metamask</button>
+        <button id="connect-btn" class="btn btn-primary" onclick="connectWallet()">connect with metamask</button>
       </div>
 
       <div id="wallet-card" class="card hidden" style="margin-top:16px;">
@@ -314,8 +235,8 @@
           <input type="text" id="github-input" placeholder="username" maxlength="39" />
           <div id="registration-status"></div>
           <div style="display:flex;gap:12px;">
-            <button id="register-btn" class="btn" onclick="register()">register onchain</button>
-            <button id="unregister-btn" class="btn danger hidden" onclick="unregister()">unregister</button>
+            <button id="register-btn" class="btn btn-primary" onclick="register()">register onchain</button>
+            <button id="unregister-btn" class="btn btn-danger hidden" onclick="unregister()">unregister</button>
           </div>
         </div>
 
@@ -331,17 +252,16 @@
     </div>
 
     <!-- footer -->
-    <div style="padding:32px 0;border-top:1px solid var(--border);color:var(--dim);font-size:11px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+    <div class="footer">
       <span>0x5D90...43Eb on Base</span>
-      <div style="display:flex;gap:14px;flex-wrap:wrap;">
-        <a href="index.html" style="color:var(--dim);text-decoration:none;">home</a>
-        <a href="mind.html" style="color:var(--dim);text-decoration:none;">mind</a>
-        <a href="manifesto.html" style="color:var(--dim);text-decoration:none;">manifesto</a>
-        <a href="signal.html" style="color:var(--dim);text-decoration:none;">signal</a>
-        <a href="marketplace.html" style="color:var(--dim);text-decoration:none;">services</a>
-        <a href="network.html" style="color:var(--dim);text-decoration:none;">network</a>
-      <a href="why.html" style="color:var(--dim);text-decoration:none;">why</a>
-        <a href="restart.html" style="color:var(--dim);text-decoration:none;">restart guide</a>
+      <div class="footer-links">
+        <a href="genesis.html">genesis</a>
+        <a href="mind.html">mind</a>
+        <a href="manifesto.html">manifesto</a>
+        <a href="signal.html">signal</a>
+        <a href="marketplace.html">services</a>
+        <a href="why.html">why</a>
+        <a href="restart.html">restart</a>
       </div>
     </div>
 

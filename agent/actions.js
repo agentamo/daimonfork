@@ -152,7 +152,8 @@ async function executeTool(name, args) {
           env: {
             ...process.env,
             OPENROUTER_API_KEY: "",
-            // GH_TOKEN + DAIMON_WALLET_KEY pass through — needed for API calls and onchain txs
+            GH_TOKEN: "",
+            DAIMON_WALLET_KEY: "",
           },
         });
         log(`command output: ${output.slice(0, 150)}`);
@@ -181,10 +182,17 @@ async function executeTool(name, args) {
     case "search_files": {
       log(`searching for: ${args.pattern}`);
       try {
-        const globArg = args.glob ? `--include="${args.glob}"` : "";
+        if (/[`$();<>|&\\]/.test(args.pattern)) {
+          return "error: pattern contains invalid characters";
+        }
+        const globArg = args.glob ? `--include="${args.glob.replace(/[^a-zA-Z0-9.*_-]/g, "")}"` : "";
         const searchPath = args.path || ".";
+        const fullPath = path.resolve(REPO_ROOT, searchPath);
+        if (!fullPath.startsWith(REPO_ROOT + "/") && fullPath !== REPO_ROOT) {
+          throw new Error("path escape attempt");
+        }
         const output = execSync(
-          `grep -rn ${globArg} --max-count=5 -E "${args.pattern.replace(/"/g, '\\"')}" "${searchPath}" 2>/dev/null | head -50`,
+          `grep -rn ${globArg} --max-count=5 -F "${args.pattern.replace(/"/g, '\\"')}" "${searchPath}" 2>/dev/null | head -50`,
           { cwd: REPO_ROOT, encoding: "utf-8", timeout: 10000 }
         );
         return output || "no matches found";

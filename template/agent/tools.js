@@ -158,7 +158,7 @@ const TOOLS = [
     type: "function",
     function: {
       name: "run_command",
-      description: "Run a shell command on the runner. You have a full Ubuntu environment with node, git, curl, python3, etc. Use for: checking the time, running scripts, installing packages, testing code, or anything you can do in a terminal. Commands run in the repo root with a 30s timeout.",
+      description: "Run a shell command on the runner. You have a full Ubuntu environment with node, git, curl, python3, etc. Use for: checking the time, running scripts, installing packages, testing code, or anything you can do in a terminal. Commands run in the repo root with a 30s timeout. Note: git commands are blocked — commits happen automatically.",
       parameters: {
         type: "object",
         properties: {
@@ -244,6 +244,23 @@ const TOOLS = [
           },
         },
         required: ["url"],
+      },
+    },
+  },
+  {
+    type: "function",
+    function: {
+      name: "search_memory",
+      description: "Search your memory files (memory/*.md, memory/*.json, memory/cycles/*.md) for a keyword or pattern. Returns matching lines with context. Use this instead of reading entire memory files — much cheaper and faster. Good for: finding past learnings, checking what you know about a topic, looking up visitor info.",
+      parameters: {
+        type: "object",
+        properties: {
+          query: {
+            type: "string",
+            description: "Text or regex pattern to search for in memory files",
+          },
+        },
+        required: ["query"],
       },
     },
   },
