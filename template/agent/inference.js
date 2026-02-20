@@ -1,16 +1,20 @@
 // inference — multi-provider API calls with fallbacks
 // daimon: you can change MODEL params but don't remove tool support
 
-const { OPENROUTER_KEY, GROQ_KEY, MOONSHOT_KEY, CEREBRAS_KEY, MODEL, MAX_TOKENS } = require("./config");
+const { LLM_KEY, LLM_PROVIDER, GROQ_KEY, MODEL, MAX_TOKENS } = require("./config");
+
+const LLM_URLS = {
+  venice: "https://api.venice.ai/api/v1/chat/completions",
+  openrouter: "https://openrouter.ai/api/v1/chat/completions",
+};
 
 // provider fallback chain - tries each in order until one works
 const PROVIDERS = [
   {
-    name: "openrouter",
-    url: "https://openrouter.ai/api/v1/chat/completions",
-    key: OPENROUTER_KEY,
-    models: [MODEL, "moonshotai/kimi-k2.5", "minimax/minimax-m2.5"],
-    route: "fallback",
+    name: LLM_PROVIDER,
+    url: LLM_URLS[LLM_PROVIDER],
+    key: LLM_KEY,
+    models: [MODEL],
     headers: (key) => ({
       Authorization: `Bearer ${key}`,
       "Content-Type": "application/json",
@@ -21,26 +25,6 @@ const PROVIDERS = [
     url: "https://api.groq.com/openai/v1/chat/completions",
     key: GROQ_KEY,
     models: ["llama-3.3-70b-versatile"],
-    headers: (key) => ({
-      Authorization: `Bearer ${key}`,
-      "Content-Type": "application/json",
-    }),
-  },
-  {
-    name: "moonshot",
-    url: "https://api.moonshot.cn/v1/chat/completions",
-    key: MOONSHOT_KEY,
-    models: ["moonshot-v1-128k"],
-    headers: (key) => ({
-      Authorization: `Bearer ${key}`,
-      "Content-Type": "application/json",
-    }),
-  },
-  {
-    name: "cerebras",
-    url: "https://api.cerebras.ai/v1/chat/completions",
-    key: CEREBRAS_KEY,
-    models: ["llama-3.3-70b"],
     headers: (key) => ({
       Authorization: `Bearer ${key}`,
       "Content-Type": "application/json",
@@ -61,12 +45,6 @@ async function inference(messages, { tools = null } = {}) {
         messages,
         temperature: 0.7,
       };
-
-      // openrouter-specific: model fallback routing
-      if (provider.route === "fallback" && provider.models.length > 1) {
-        body.models = provider.models;
-        body.route = "fallback";
-      }
 
       // attach tools if provided
       if (tools) {
@@ -89,8 +67,7 @@ async function inference(messages, { tools = null } = {}) {
       const data = await res.json();
       const choice = data.choices[0];
 
-      // log which provider succeeded (useful for debugging)
-      if (provider.name !== "openrouter") {
+      if (provider.name !== LLM_PROVIDER) {
         console.log(`[inference] used fallback provider: ${provider.name}`);
       }
 
@@ -103,11 +80,9 @@ async function inference(messages, { tools = null } = {}) {
     } catch (err) {
       errors.push(`${provider.name}: ${err.message}`);
       console.log(`[inference] ${provider.name} failed: ${err.message}`);
-      // continue to next provider
     }
   }
 
-  // all providers failed
   throw new Error(`All inference providers failed:\n${errors.join("\n")}`);
 }
 
