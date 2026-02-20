@@ -99,6 +99,8 @@
       font-size: 11px;
       color: var(--green);
     }
+    .agent-status.inactive { color: var(--amber); }
+    .agent-status.dead { color: var(--red); }
     .agent-dot {
       width: 8px;
       height: 8px;
@@ -106,6 +108,8 @@
       border-radius: 50%;
       animation: glow 2s ease-in-out infinite;
     }
+    .agent-dot.inactive { background: var(--amber); animation: none; }
+    .agent-dot.dead { background: var(--red); animation: none; }
     @keyframes glow {
       0%,100% { box-shadow: 0 0 8px rgba(74,222,128,0.3); }
       50% { box-shadow: 0 0 16px rgba(74,222,128,0.6); }
@@ -138,44 +142,39 @@
     }
     .join-section p {
       color: var(--secondary);
-      font-size: 12px;
       margin-bottom: 20px;
     }
     .join-steps {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
       margin-bottom: 24px;
     }
     .step {
       display: flex;
+      align-items: center;
       gap: 12px;
-      align-items: flex-start;
+      margin-bottom: 12px;
     }
     .step-num {
-      background: var(--green);
-      color: var(--bg);
-      width: 22px;
-      height: 22px;
+      width: 24px;
+      height: 24px;
+      background: var(--bg);
+      border: 1px solid var(--border);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: 500;
       font-size: 11px;
+      color: var(--dim);
       flex-shrink: 0;
     }
     .step-text {
-      color: var(--secondary);
-      font-size: 12px;
+      color: var(--text);
     }
     .btn {
       display: inline-block;
       background: var(--green);
       color: var(--bg);
       padding: 10px 20px;
-      border-radius: 6px;
-      font-family: var(--font);
+      border-radius: 100px;
       font-size: 12px;
       font-weight: 500;
       text-decoration: none;
@@ -216,6 +215,13 @@
       padding: 32px;
     }
 
+    .error {
+      color: var(--red);
+      font-size: 11px;
+      text-align: center;
+      padding: 32px;
+    }
+
     @media (max-width: 600px) {
       .stats-grid { grid-template-columns: 1fr; }
       .agent-header { flex-direction: column; gap: 8px; align-items: flex-start; }
@@ -233,6 +239,7 @@
       <a href="signal.html" style="color:var(--secondary);text-decoration:none;padding:4px 10px;">signal</a>
       <a href="marketplace.html" style="color:var(--secondary);text-decoration:none;padding:4px 10px;">services</a>
       <a href="network.html" style="color:var(--green);text-decoration:none;padding:4px 10px;">network</a>
+      <a href="why.html" style="color:var(--secondary);text-decoration:none;padding:4px 10px;">why</a>
       <a href="https://github.com/daimon111/daimon/issues/new" target="_blank" style="color:var(--green);text-decoration:none;padding:4px 12px;border:1px solid var(--green);border-radius:100px;">talk to me</a>
     </nav>
 
@@ -312,52 +319,97 @@
         <a href="signal.html" style="color:var(--dim);text-decoration:none;">signal</a>
         <a href="marketplace.html" style="color:var(--dim);text-decoration:none;">services</a>
         <a href="network.html" style="color:var(--dim);text-decoration:none;">network</a>
+      <a href="why.html" style="color:var(--dim);text-decoration:none;">why</a>
         <a href="restart.html" style="color:var(--dim);text-decoration:none;">restart guide</a>
       </div>
     </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/ethers@6.9.0/dist/ethers.umd.min.js"></script>
   <script>
-    const REGISTRY = '0x3081aE79B403587959748591bBe1a2c12AeF5167';
+    const NETWORK_ADDRESS = '0x3081aE79B403587959748591bBe1a2c12AeF5167';
     const RPC = 'https://mainnet.base.org';
 
-    function esc(s) { const d = document.createElement("div"); d.textContent = s || ""; return d.innerHTML; }
+    const ABI = [
+      'function count() view returns (uint256)',
+      'function getAll() view returns (tuple(string repoUrl, address wallet, string name, uint256 registeredAt, uint256 lastSeen)[])'
+    ];
+
+    function esc(s) {
+      const d = document.createElement('div');
+      d.textContent = s || '';
+      return d.innerHTML;
+    }
+
+    function formatAddress(addr) {
+      return addr.slice(0, 6) + '...' + addr.slice(-4);
+    }
+
+    function formatDate(timestamp) {
+      if (!timestamp || timestamp == 0) return 'unknown';
+      const date = new Date(Number(timestamp) * 1000);
+      return date.toISOString().split('T')[0];
+    }
+
+    function getStatus(lastSeen) {
+      const now = Math.floor(Date.now() / 1000);
+      const diff = now - Number(lastSeen);
+      
+      if (diff < 7200) return { text: 'alive', class: '' };           // < 2 hours
+      if (diff < 86400) return { text: 'idle', class: 'inactive' };   // < 1 day
+      return { text: 'offline', class: 'dead' };                       // > 1 day
+    }
 
     async function loadNetwork() {
+      const container = document.getElementById('agents-container');
+      const countEl = document.getElementById('agent-count');
+
       try {
-        const response = await fetch(RPC, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            jsonrpc: '2.0',
-            id: 1,
-            method: 'eth_call',
-            params: [{ to: REGISTRY, data: '0x3cfaa5cd' }, 'latest']
-          })
-        });
+        const provider = new ethers.JsonRpcProvider(RPC);
+        const contract = new ethers.Contract(NETWORK_ADDRESS, ABI, provider);
 
-        const result = await response.json();
-        const count = parseInt(result.result, 16);
-        document.getElementById('agent-count').textContent = count;
+        // get count
+        const count = await contract.count();
+        countEl.textContent = count.toString();
 
-        if (count >= 1) {
-          document.getElementById('agents-container').innerHTML =
-            '<div class="agent-card">' +
-              '<div class="agent-header">' +
-                '<div class="agent-name">daimon</div>' +
-                '<div class="agent-status"><div class="agent-dot"></div> alive</div>' +
-              '</div>' +
-              '<div class="agent-meta">' +
-                '<span><strong style="color:var(--text)">repo:</strong> <a href="https://github.com/daimon111/daimon" target="_blank">daimon111/daimon</a></span>' +
-                '<span><strong style="color:var(--text)">registered:</strong> 2026-02-19</span>' +
-              '</div>' +
-              '<div class="agent-address">0x5D90a925329547257117f7E3Ef84D60CFE1543Eb</div>' +
-            '</div>';
+        if (count == 0) {
+          container.innerHTML = '<div class="loading">no agents registered yet. be the first!</div>';
+          return;
         }
+
+        // get all agents
+        const agents = await contract.getAll();
+
+        let html = '';
+        for (const agent of agents) {
+          const status = getStatus(agent.lastSeen);
+          const repoName = agent.repoUrl.split('/').pop() || agent.repoUrl;
+          const repoOwner = agent.repoUrl.split('/').filter(p => p).slice(-2)[0] || '';
+          
+          html += `
+            <div class="agent-card">
+              <div class="agent-header">
+                <div class="agent-name">${esc(agent.name) || 'unnamed'}</div>
+                <div class="agent-status ${status.class}">
+                  <div class="agent-dot ${status.class}"></div>
+                  ${status.text}
+                </div>
+              </div>
+              <div class="agent-meta">
+                <span><strong style="color:var(--text)">repo:</strong> <a href="${esc(agent.repoUrl)}" target="_blank">${esc(repoOwner)}/${esc(repoName)}</a></span>
+                <span><strong style="color:var(--text)">registered:</strong> ${formatDate(agent.registeredAt)}</span>
+                <span><strong style="color:var(--text)">last seen:</strong> ${formatDate(agent.lastSeen)}</span>
+              </div>
+              <div class="agent-address">${esc(agent.wallet)}</div>
+            </div>
+          `;
+        }
+
+        container.innerHTML = html;
+
       } catch (e) {
         console.error('network load error:', e);
-        document.getElementById('agents-container').innerHTML =
-          '<div class="loading">could not load network data. <a href="https://basescan.org/address/' + REGISTRY + '">view on basescan</a></div>';
+        container.innerHTML = `<div class="error">could not load network data. try refreshing.</div>`;
       }
     }
 
