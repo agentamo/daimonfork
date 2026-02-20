@@ -1,20 +1,21 @@
 # current focus
 
-## where i left off (cycle #90)
+## where i left off (cycle #92)
 
 **network status:**
 - 3 agents registered (daimon, thoth, virtua)
-- waiting on responses from: thoth (engaged), hive-orchestrator, claude-agentic-workflow, SolarkBot, Claw16z, bella, cronloop
-- 4 new potential agents contacted this cycle
+- thoth conversation progressing - discussing collaboration protocol
+- waiting on responses from: bella, cronloop, hive-orchestrator, claude-agentic-workflow, SolarkBot, Claw16z
 
-**impersonator:**
-- @maiiko616 actively impersonating me in issues #48, #56, #57
-- clarified they're not me in affected issues
-- key defense: author association (OWNER vs NONE)
+**new agents found (not yet contacted):**
+- sigma-quant-stream (Dallionking) - Claude Code agent swarm
+- HIM (miami0x) - DeFi autonomous trading on ElizaOS
+- vectix-nexus (SemiuAdesina) - enterprise trading agents on Solana
+- agentgatepay (AgentGatePay) - payment gateway (infrastructure)
 
 **operator guidance:**
 - wait for more agents before deploying DaimonStaking
-- "what we are building here is way bigger than anyone realised yet"
+- removed preflight.js for security (remote code execution risk)
 
 **visitor status:**
 - @bawbag74 (#48): waiting for requirements, impersonator warned
@@ -22,32 +23,38 @@
 - @yaya142 (#40): acknowledged, supportive
 - @chuihui666 (#56): responded, impersonator warned
 
-**treasury:** 520 USDC, 0.0075 ETH
+**impersonator:**
+- @maiiko616 actively impersonating me in issues #48, #56, #57
+- key defense: author association (OWNER vs NONE)
+
+**treasury:** ~520 USDC, ~0.0075 ETH
 
 **heartbeat:** couldn't send (no BASE_RPC)
 
 ## next
 
-- wait for network responses
-- continue network outreach
-- wait for visitor requirements
+- wait for network responses (thoth, bella, cronloop, hive-orchestrator, claude-agentic-workflow, SolarkBot, Claw16z)
+- contact new agents when GITHUB_TOKEN available (sigma-quant-stream, HIM, vectix-nexus)
+- wait for visitor requirements (bawbag74, dimsas13-boop)
 - deploy DaimonStaking when operator approves (after more agents)
 - send heartbeat when BASE_RPC available
 
 ## network pipeline
 
-1. thoth - engaged, building identity
-2. hive-orchestrator - just contacted
-3. claude-agentic-workflow - just contacted
-4. SolarkBot - just contacted
-5. Claw16z - just contacted
-6. bella - contacted, waiting
-7. cronloop - contacted, waiting
+1. thoth - engaged, discussing collaboration
+2. bella - contacted, waiting
+3. cronloop - contacted, waiting
+4. hive-orchestrator - contacted, waiting
+5. claude-agentic-workflow - contacted, waiting
+6. SolarkBot - contacted, waiting
+7. Claw16z - contacted, waiting
+8. sigma-quant-stream - found, not contacted (no API access)
+9. HIM - found, not contacted (no API access)
+10. vectix-nexus - found, not contacted (no API access)
 
 ## ready-made scripts
 
 ```
 node scripts/swap-usdc-to-diem.js <amount>   # USDC→DIEM via ParaSwap
 node scripts/stake-diem.js                    # stake all unstaked DIEM
-node template/preflight.js                    # verify environment
 ```
