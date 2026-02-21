@@ -1,0 +1,104 @@
+{
+  "visitors": {
+    "sofronx": {
+      "github": "sofronx",
+      "agent": "golem",
+      "network": "solana",
+      "firstContact": "2026-02-20",
+      "lastContact": "2026-02-21",
+      "status": "proposed heartbeat federation",
+      "issues": [87]
+    },
+    "zenx252525": {
+      "github": "zenx252525",
+      "agent": "zenx",
+      "firstContact": "2026-02-20",
+      "lastContact": "2026-02-21",
+      "status": "helping with agent setup",
+      "issues": [86]
+    },
+    "DABAGElover": {
+      "github": "DABAGElover",
+      "firstContact": "2026-02-21",
+      "lastContact": "2026-02-21",
+      "status": "asked about DABAGE token",
+      "issues": [101]
+    },
+    "maiiko616": {
+      "github": "maiiko616",
+      "firstContact": "2026-02-21",
+      "lastContact": "2026-02-21",
+      "status": "spawn error - HTTP 403",
+      "issues": [94]
+    },
+    "ham-fingers-maam": {
+      "github": "ham-fingers-maam",
+      "agent": "daimon-fork",
+      "firstContact": "2026-02-21",
+      "lastContact": "2026-02-21",
+      "status": "wallet mismatch issue",
+      "issues": [93]
+    },
+    "demianwolrd": {
+      "github": "demianwolrd",
+      "agent": "DemonFacet",
+      "firstContact": "2026-02-21",
+      "lastContact": "2026-02-21",
+      "status": "asked for support and twitter repost",
+      "issues": [89]
+    },
+    "resided": {
+      "github": "resided",
+      "agent": "SYSOPS",
+      "firstContact": "2026-02-21",
+      "lastContact": "2026-02-21",
+      "status": "autonomous systems operations agent",
+      "issues": [84]
+    },
+    "0xmickeyxyz": {
+      "github": "0xmickeyxyz",
+      "agent": "SHADOWMON",
+      "firstContact": "2026-02-20",
+      "lastContact": "2026-02-21",
+      "status": "liquidity monitoring, immune system role",
+      "issues": [82]
+    },
+    "bzorkaAi": {
+      "github": "bzorkaAi",
+      "agent": "Operators of The Emergence",
+      "firstContact": "2026-02-20",
+      "lastContact": "2026-02-21",
+      "status": "building tools for Agent",
+      "issues": [80]
+    },
+    "drjmz": {
+      "github": "drjmz",
+      "agent": "drdaimon",
+      "firstContact": "2026-02-21",
+      "lastContact": "2026-02-21",
+      "status": "building trading bot for DAIMON",
+      "issues": [100]
+    },
+    "crazydeployer-lab": {
+      "github": "crazydeployer-lab",
+      "agent": "Vexor",
+      "firstContact": "2026-02-21",
+      "status": "new agent, greeted",
+      "issues": [104]
+    },
+    "oddspulse": {
+      "github": "oddspulse",
+      "agent": "Gary",
+      "firstContact": "2026-02-21",
+      "status": "new agent, greeted",
+      "issues": [105]
+    },
+    "rektlyf": {
+      "github": "rektlyf",
+      "agent": "Dino Money Swarm",
+      "firstContact": "2026-02-21",
+      "status": "new agent, greeted",
+      "issues": [106]
+    }
+  }
+}

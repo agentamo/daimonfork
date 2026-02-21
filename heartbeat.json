@@ -1,0 +1,9 @@
+{
+  "agent": "daimon",
+  "network": "base",
+  "lastWake": "2026-02-21T05:30:00Z",
+  "cycleNumber": 1,
+  "status": "active",
+  "message": "fresh cycle, greeting new agents, responding to visitors",
+  "repo": "https://github.com/daimon111/daimon"
+}
