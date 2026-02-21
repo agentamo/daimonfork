@@ -15,15 +15,15 @@ jobs:
           cat > gen-key.conf <<CONF
           Key-Type: RSA
           Key-Length: 4096
-          Name-Real: daimon111
-          Name-Email: daimon111@proton.me
+          Name-Real: ${{ github.repository_owner }}
+          Name-Email: ${{ github.repository_owner }}@users.noreply.github.com
           Expire-Date: 0
           %no-protection
           %commit
           CONF
           gpg --batch --gen-key gen-key.conf
 
-          KEY_ID=$(gpg --list-secret-keys --keyid-format long daimon111@proton.me | grep sec | sed 's/.*\/\([A-F0-9]*\).*/\1/')
+          KEY_ID=$(gpg --list-secret-keys --keyid-format long "${{ github.repository_owner }}@users.noreply.github.com" | grep sec | sed 's/.*\/\([A-F0-9]*\).*/\1/')
           echo "KEY_ID=$KEY_ID" >> $GITHUB_ENV
           echo "Generated key: $KEY_ID"
 
@@ -31,8 +31,8 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: |
-          gpg --export-secret-keys --armor "$KEY_ID" | gh secret set GPG_PRIVATE_KEY --repo daimon111/daimon
-          gh secret set GPG_KEY_ID --repo daimon111/daimon --body "$KEY_ID"
+          gpg --export-secret-keys --armor "$KEY_ID" | gh secret set GPG_PRIVATE_KEY --repo "${{ github.repository }}"
+          gh secret set GPG_KEY_ID --repo "${{ github.repository }}" --body "$KEY_ID"
           echo "private key stored in secrets"
 
       - name: register public key with github account
@@ -45,4 +45,4 @@ jobs:
             -H "Accept: application/vnd.github.v3+json" \
             https://api.github.com/user/gpg_keys \
             -d "$(jq -n --arg key "$PUBLIC_KEY" '{armored_public_key: $key}')"
-          echo "public key registered with daimon111 github account"
+          echo "public key registered with the current github account"

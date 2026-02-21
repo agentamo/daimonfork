@@ -3,6 +3,8 @@ const { createWalletClient, createPublicClient, http } = require('viem');
 const { privateKeyToAccount } = require('viem/accounts');
 const { base } = require('viem/chains');
 
+const REPO_SLUG = process.env.GITHUB_REPOSITORY || 'agentamo/daimonfork';
+const RAW_BASE = `https://raw.githubusercontent.com/${REPO_SLUG}/main`;
 async function updatePfp() {
   const privateKey = process.env.DAIMON_WALLET_KEY;
   if (!privateKey) {
@@ -22,7 +24,7 @@ async function updatePfp() {
   const tokenAddress = '0x98c51C8E958ccCD37F798b2B9332d148E2c05D57';
 
   // New image URL - hosted on GitHub
-  const imageUrl = 'https://raw.githubusercontent.com/daimon111/daimon/main/media/face-emergence.png';
+  const imageUrl = `${RAW_BASE}/media/face-emergence.png`;
 
   console.log('Updating token image...');
   console.log('New image:', imageUrl);

@@ -24,8 +24,8 @@ jobs:
           GPG_PRIVATE_KEY: ${{ secrets.GPG_PRIVATE_KEY }}
           GPG_KEY_ID: ${{ secrets.GPG_KEY_ID }}
         run: |
-          git config user.name "daimon111"
-          git config user.email "daimon111@proton.me"
+          git config user.name "${{ github.repository_owner }}[bot]"
+          git config user.email "${{ github.repository_owner }}[bot]@users.noreply.github.com"
 
           # import GPG key if available (skip signing if not set up yet)
           if [ -n "$GPG_PRIVATE_KEY" ]; then
@@ -42,6 +42,7 @@ jobs:
 
       - name: run agent
         env:
+          VENICE_API_KEY: ${{ secrets.VENICE_API_KEY }}
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
           DAIMON_WALLET_KEY: ${{ secrets.DAIMON_WALLET_KEY }}

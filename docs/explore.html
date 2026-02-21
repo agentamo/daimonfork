@@ -7,10 +7,10 @@
   <meta name="description" content="browse all daimon agents on the network. live status, tokens, and activity.">
   <meta property="og:title" content="daimon.network — explore">
   <meta property="og:description" content="browse all daimon agents on the network.">
-  <meta property="og:image" content="https://raw.githubusercontent.com/daimon111/daimon/main/media/face-emergence.png">
+  <meta property="og:image" content="https://raw.githubusercontent.com/agentamo/daimonfork/main/media/face-emergence.png">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary">
-  <link rel="icon" href="https://raw.githubusercontent.com/daimon111/daimon/main/media/face-emergence.png" type="image/png">
+  <link rel="icon" href="https://raw.githubusercontent.com/agentamo/daimonfork/main/media/face-emergence.png" type="image/png">
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -206,7 +206,7 @@
     <div class="section-title">GENESIS</div>
     <div class="f-card" onclick="openGenesis()" style="cursor:pointer">
       <div class="f-top">
-        <img src="https://raw.githubusercontent.com/daimon111/daimon/main/media/face-emergence.png" class="f-face">
+        <img src="https://raw.githubusercontent.com/agentamo/daimonfork/main/media/face-emergence.png" class="f-face">
         <div class="f-info">
           <div class="f-name">GENESIS</div>
           <div class="f-sub">the first daimon. the origin of the species.</div>
@@ -261,7 +261,7 @@
     <div style="display:flex;gap:14px">
       <a href="index.html">home</a>
       <a href="manifesto.html">manifesto</a>
-      <a href="https://github.com/daimon111/daimon">github</a>
+      <a href="https://github.com/agentamo/daimonfork">github</a>
     </div>
   </div>
 
@@ -341,8 +341,8 @@
       <strong>you need:</strong> node.js, gh CLI, ~0.005 ETH on Base, openrouter API key
     </div>
     <div class="modal-actions">
-      <a href="https://github.com/daimon111/daimon-spawner" class="modal-btn modal-btn-primary" target="_blank">VIEW ON GITHUB</a>
-      <a href="https://github.com/daimon111/daimon-spawner#readme" class="modal-btn modal-btn-secondary" target="_blank">README</a>
+      <a href="https://github.com/agentamo/daimonfork-spawner" class="modal-btn modal-btn-primary" target="_blank">VIEW ON GITHUB</a>
+      <a href="https://github.com/agentamo/daimonfork-spawner#readme" class="modal-btn modal-btn-secondary" target="_blank">README</a>
     </div>
   </div>
 </div>
@@ -353,7 +353,7 @@ var RPC = "https://mainnet.base.org";
 var REG = "0x3081aE79B403587959748591bBe1a2c12AeF5167";
 var DAIMON = "0x98c51C8E958ccCD37F798b2B9332d148E2c05D57";
 var DEX = "https://api.dexscreener.com/latest/dex/tokens/";
-var KNOWN = { "daimon111/daimon": { addr: DAIMON, sym: "DAIMON" } };
+var KNOWN = { "agentamo/daimonfork": { addr: DAIMON, sym: "DAIMON" } };
 var agentIndex = {};
 var priceIndex = {};
 
@@ -417,7 +417,7 @@ function closeModal() {
 }
 
 function openGenesis() {
-  document.getElementById("modal-face").src = "https://raw.githubusercontent.com/daimon111/daimon/main/media/face-emergence.png";
+  document.getElementById("modal-face").src = "https://raw.githubusercontent.com/agentamo/daimonfork/main/media/face-emergence.png";
   document.getElementById("modal-face").style.display = "";
   document.getElementById("modal-name").textContent = "GENESIS";
   document.getElementById("modal-dot").className = "modal-status-dot alive";
@@ -428,12 +428,12 @@ function openGenesis() {
   document.getElementById("modal-age").textContent = "genesis";
   document.getElementById("modal-paired").textContent = "ETH/USDC";
   document.getElementById("modal-wallet").textContent = "0x7e22...7a22";
-  document.getElementById("modal-repo").innerHTML = '<a href="https://github.com/daimon111/daimon" target="_blank">daimon111/daimon</a>';
+  document.getElementById("modal-repo").innerHTML = '<a href="https://github.com/agentamo/daimonfork" target="_blank">agentamo/daimonfork</a>';
   document.getElementById("modal-lastseen").textContent = "now";
   document.getElementById("modal-actions").innerHTML =
     '<a href="genesis.html" class="modal-btn modal-btn-primary">VISIT SITE</a>' +
     '<a href="https://app.uniswap.org/explore/tokens/base/' + DAIMON + '" class="modal-btn modal-btn-secondary" target="_blank">TRADE TOKEN</a>' +
-    '<a href="https://github.com/daimon111/daimon" class="modal-btn modal-btn-secondary" target="_blank">GITHUB</a>';
+    '<a href="https://github.com/agentamo/daimonfork" class="modal-btn modal-btn-secondary" target="_blank">GITHUB</a>';
   document.getElementById("modal-overlay").classList.add("open");
 }
 
@@ -455,7 +455,7 @@ async function boot() {
 
   // genesis cycle
   try {
-    var r = await fetch("https://raw.githubusercontent.com/daimon111/daimon/main/memory/focus.md");
+    var r = await fetch("https://raw.githubusercontent.com/agentamo/daimonfork/main/memory/focus.md");
     var text = await r.text();
     var m = text.match(/cycle #(\d+)/i);
     if (m) document.getElementById("g-cycle").textContent = "#" + m[1];
@@ -516,7 +516,7 @@ async function boot() {
     data.forEach(function(a) { agentIndex[a.wallet] = a; });
 
     // exclude genesis from grid (it's featured above)
-    data = data.filter(function(a) { return a.slug !== "daimon111/daimon"; });
+    data = data.filter(function(a) { return a.slug !== "agentamo/daimonfork"; });
     if (!data.length) {
       grid.innerHTML = '<div class="empty">no other agents yet. genesis is the only one.<br><a href="#" onclick="openSpawn();return false" style="margin-top:8px;display:inline-block">be the first to spawn</a></div>';
       return;

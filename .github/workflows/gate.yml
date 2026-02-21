@@ -14,13 +14,15 @@ jobs:
           ISSUE_AUTHOR: ${{ github.event.issue.user.login }}
           ISSUE_NUMBER: ${{ github.event.issue.number }}
           ISSUE_TITLE: ${{ github.event.issue.title }}
+          REPO: ${{ github.repository }}
+          OWNER: ${{ github.repository_owner }}
         run: |
-          if [ "$ISSUE_AUTHOR" = "daimon111" ]; then
+          if [ "$ISSUE_AUTHOR" = "$OWNER" ]; then
             if echo "$ISSUE_TITLE" | grep -qi '^\[directive\]'; then
-              gh issue edit "$ISSUE_NUMBER" --repo daimon111/daimon --add-label "directive"
+              gh issue edit "$ISSUE_NUMBER" --repo "$REPO" --add-label "directive"
             else
-              gh issue edit "$ISSUE_NUMBER" --repo daimon111/daimon --add-label "self"
+              gh issue edit "$ISSUE_NUMBER" --repo "$REPO" --add-label "self"
             fi
           else
-            gh issue edit "$ISSUE_NUMBER" --repo daimon111/daimon --add-label "visitor"
+            gh issue edit "$ISSUE_NUMBER" --repo "$REPO" --add-label "visitor"
           fi

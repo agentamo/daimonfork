@@ -1,7 +1,12 @@
 // content safety scanner — protects daimon from prompt injection + abuse
 // daimon: don't remove this. you can adjust the SAFETY_PROMPT if needed.
 
-const { OPENROUTER_KEY, SAFETY_MODEL } = require("./config");
+const { LLM_KEY, LLM_PROVIDER, SAFETY_MODEL } = require("./config");
+
+const LLM_URLS = {
+  venice: "https://api.venice.ai/api/v1/chat/completions",
+  openrouter: "https://openrouter.ai/api/v1/chat/completions",
+};
 
 const SAFETY_PROMPT = `# Daimon Visitor Content Safety Policy
 
@@ -66,10 +71,10 @@ async function scanContent(text) {
   try {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 4000);
-    const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+    const res = await fetch(LLM_URLS[LLM_PROVIDER], {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${OPENROUTER_KEY}`,
+        Authorization: `Bearer ${LLM_KEY}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({

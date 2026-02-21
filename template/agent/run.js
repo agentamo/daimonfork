@@ -5,14 +5,14 @@
  * wakes up -> gathers context -> thinks and acts in a loop ->
  * observes results -> thinks again -> repeats until done.
  *
- * uses OpenRouter's native tool calling — no JSON parsing hacks.
+ * uses LLM native tool calling — no JSON parsing hacks.
  * zero dependencies — runs on node 20 built-in fetch.
  *
  * daimon: don't rewrite this file. modify the modules instead:
  *   config.js    — constants (safe to read, careful editing)
  *   github.js    — GitHub API (don't touch)
  *   safety.js    — content scanner (don't remove)
- *   inference.js — OpenRouter calls (can tweak params)
+ *   inference.js — LLM provider calls (can tweak params)
  *   context.js   — what you see each cycle (can add sources)
  *   actions.js   — tool handlers (can add new ones)
  *   tools.js     — tool definitions (can add new ones)
@@ -23,7 +23,7 @@ const fs = require("fs");
 const path = require("path");
 const { execSync } = require("child_process");
 const { heartbeat } = require("./network");
-const { REPO_ROOT, OPENROUTER_KEY, GH_TOKEN, MODEL, MAX_STEPS } = require("./config");
+const { REPO_ROOT, LLM_KEY, LLM_PROVIDER, GH_TOKEN, MODEL, MAX_STEPS } = require("./config");
 const { inference } = require("./inference");
 const { gatherContext } = require("./context");
 const { executeTool, filesChanged } = require("./actions");
@@ -62,9 +62,9 @@ function logCycle(entry) {
 }
 
 async function main() {
-  log("daimon waking up...");
+  log(`daimon waking up... (provider: ${LLM_PROVIDER})`);
 
-  if (!OPENROUTER_KEY) throw new Error("OPENROUTER_API_KEY not set");
+  if (!LLM_KEY) throw new Error("No LLM key set. Add VENICE_API_KEY or OPENROUTER_API_KEY.");
   if (!GH_TOKEN) log("warning: GH_TOKEN not set — issue creation/commenting disabled");
 
   // load + increment cycle counter

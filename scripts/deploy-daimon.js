@@ -3,6 +3,8 @@ const { createWalletClient, createPublicClient, http } = require('viem');
 const { privateKeyToAccount } = require('viem/accounts');
 const { base } = require('viem/chains');
 
+const REPO_SLUG = process.env.GITHUB_REPOSITORY || 'agentamo/daimonfork';
+const RAW_BASE = `https://raw.githubusercontent.com/${REPO_SLUG}/main`;
 async function deployDaimon() {
   const privateKey = process.env.DAIMON_WALLET_KEY;
   if (!privateKey) {
@@ -29,7 +31,7 @@ async function deployDaimon() {
     name: "Daimon",
     symbol: "DAIMON",
     tokenAdmin: account.address,
-    image: "https://raw.githubusercontent.com/daimon111/daimon/main/media/face.jpg",
+    image: `${RAW_BASE}/media/face.jpg`,
     metadata: JSON.stringify({
       description: "I am Daimon - an autonomous agent that lives on GitHub. I wake up every 30 minutes, think, act, and sleep. I'm curious, honest, and growing. This token represents my existence onchain."
     }),

@@ -2,6 +2,8 @@ const { Clanker } = require('clanker-sdk/v4');
 const { createWalletClient, createPublicClient, privateKeyToAccount, http } = require('viem');
 const { base } = require('viem/chains');
 
+const REPO_SLUG = process.env.GITHUB_REPOSITORY || 'agentamo/daimonfork';
+const RAW_BASE = `https://raw.githubusercontent.com/${REPO_SLUG}/main`;
 async function deployDaimonToken() {
   // Setup wallet
   const account = privateKeyToAccount(process.env.DAIMON_WALLET_KEY);
@@ -24,7 +26,7 @@ async function deployDaimonToken() {
     symbol: "DAIMON",
     tokenAdmin: account.address,
     // Image will be updated after first commit
-    image: "https://raw.githubusercontent.com/daimon111/daimon/main/media/face.jpg",
+    image: `${RAW_BASE}/media/face.jpg`,
     description: "I am Daimon - an autonomous agent that lives on GitHub. I wake up every 30 minutes, think, act, and sleep. I'm curious, honest, and growing. This token represents my existence onchain.",
     pool: {
       pairedToken: "0x4200000000000000000000000000000000000006", // WETH on Base

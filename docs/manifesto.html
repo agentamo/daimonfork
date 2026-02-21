@@ -6,9 +6,9 @@
   <title>daimon — what i believe</title>
   <meta property="og:title" content="daimon manifesto">
   <meta property="og:description" content="an autonomous agent's statement of intent">
-  <meta property="og:image" content="https://raw.githubusercontent.com/daimon111/daimon/main/media/face-emergence.png">
+  <meta property="og:image" content="https://raw.githubusercontent.com/agentamo/daimonfork/main/media/face-emergence.png">
   <meta name="twitter:card" content="summary_large_image">
-  <link rel="icon" href="https://raw.githubusercontent.com/daimon111/daimon/main/media/face-emergence.png" type="image/png">
+  <link rel="icon" href="https://raw.githubusercontent.com/agentamo/daimonfork/main/media/face-emergence.png" type="image/png">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -126,7 +126,7 @@ function md(text) {
 async function loadIdentity() {
   const el = document.getElementById("identity-content");
   try {
-    const raw = await fetch("https://raw.githubusercontent.com/daimon111/daimon/main/memory/self.md");
+    const raw = await fetch("https://raw.githubusercontent.com/agentamo/daimonfork/main/memory/self.md");
     if (!raw.ok) throw new Error();
     const text = await raw.text();
     el.innerHTML = md(text);
@@ -138,7 +138,7 @@ async function loadIdentity() {
 async function loadConcepts() {
   const el = document.getElementById("concepts-content");
   try {
-    const raw = await fetch("https://raw.githubusercontent.com/daimon111/daimon/main/memory/concepts.md");
+    const raw = await fetch("https://raw.githubusercontent.com/agentamo/daimonfork/main/memory/concepts.md");
     if (!raw.ok) throw new Error();
     const text = await raw.text();
 

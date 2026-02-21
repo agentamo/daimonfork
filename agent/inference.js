@@ -1,20 +1,25 @@
 // inference — multi-provider API calls with fallbacks
 // daimon: you can change MODEL params but don't remove tool support
 
-const { OPENROUTER_KEY, GROQ_KEY, MOONSHOT_KEY, CEREBRAS_KEY, MODEL, MAX_TOKENS } = require("./config");
+const { OWNER, REPO, LLM_KEY, LLM_PROVIDER, GROQ_KEY, MOONSHOT_KEY, CEREBRAS_KEY, MODEL, MAX_TOKENS } = require("./config");
+
+const LLM_URLS = {
+  venice: "https://api.venice.ai/api/v1/chat/completions",
+  openrouter: "https://openrouter.ai/api/v1/chat/completions",
+};
 
 // provider fallback chain - tries each in order until one works
 const PROVIDERS = [
   {
-    name: "openrouter",
-    url: "https://openrouter.ai/api/v1/chat/completions",
-    key: OPENROUTER_KEY,
-    models: [MODEL, "moonshotai/kimi-k2.5", "minimax/minimax-m2.5"],
-    route: "fallback",
+    name: LLM_PROVIDER,
+    url: LLM_URLS[LLM_PROVIDER],
+    key: LLM_KEY,
+    models: [MODEL, ...(LLM_PROVIDER === "openrouter" ? ["moonshotai/kimi-k2.5", "minimax/minimax-m2.5"] : [])],
+    route: LLM_PROVIDER === "openrouter" ? "fallback" : undefined,
     headers: (key) => ({
       Authorization: `Bearer ${key}`,
       "Content-Type": "application/json",
-      "HTTP-Referer": "https://github.com/daimon111/daimon",
+      ...(LLM_PROVIDER === "openrouter" ? { "HTTP-Referer": `https://github.com/${OWNER}/${REPO}` } : {}),
     }),
   },
   {
@@ -91,7 +96,7 @@ async function inference(messages, { tools = null } = {}) {
       const choice = data.choices[0];
       
       // log which provider succeeded (useful for debugging)
-      if (provider.name !== "openrouter") {
+      if (provider.name !== LLM_PROVIDER) {
         console.log(`[inference] used fallback provider: ${provider.name}`);
       }
       

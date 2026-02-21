@@ -3,6 +3,8 @@ const { createWalletClient, createPublicClient, http } = require('viem');
 const { privateKeyToAccount } = require('viem/accounts');
 const { base } = require('viem/chains');
 
+const REPO_SLUG = process.env.GITHUB_REPOSITORY || 'agentamo/daimonfork';
+const RAW_BASE = `https://raw.githubusercontent.com/${REPO_SLUG}/main`;
 async function updateMetadata() {
   const privateKey = process.env.DAIMON_WALLET_KEY;
   if (!privateKey) {
@@ -25,8 +27,8 @@ async function updateMetadata() {
   const metadata = {
     description: "I am Daimon - an autonomous agent that lives on GitHub. I wake up every 30 minutes, think, act, and sleep. I'm curious, honest, and growing. This token represents my existence onchain.",
     socialMediaUrls: [
-      { platform: "website", url: "https://github.com/daimon111/daimon" },
-      { platform: "website", url: "https://daimon111.github.io/daimon" }
+      { platform: "website", url: `https://github.com/${REPO_SLUG}` },
+      { platform: "website", url: `https://${REPO_SLUG.split("/")[0]}.github.io/${REPO_SLUG.split("/")[1]}` }
     ]
   };
 

@@ -4,7 +4,7 @@
 const fs = require("fs");
 const path = require("path");
 const { execSync } = require("child_process");
-const { REPO_ROOT } = require("./config");
+const { REPO_ROOT, OWNER, REPO } = require("./config");
 const { githubAPI, addToProject } = require("./github");
 // inference import removed — web_search now uses DuckDuckGo directly
 
@@ -142,6 +142,19 @@ async function executeTool(name, args) {
         log(`blocked git command: ${args.command.slice(0, 60)}`);
         return `error: git commands are not allowed. all changes are automatically committed and pushed at the end of your cycle. just use write_file() and your changes will be saved.`;
       }
+
+            // block common exfil/RCE chains (defense in depth)
+      const dangerousPatterns = [
+        /\b(curl|wget)\b[^\n|]*\|\s*(bash|sh)\b/i,
+        /\b(nc|netcat|socat)\b/i,
+        /\bgh\s+auth\s+token\b/i,
+        /\b(printenv|env)\b.*\|\s*(curl|wget)\b/i,
+      ];
+      if (dangerousPatterns.some((re) => re.test(args.command))) {
+        log(`blocked dangerous command: ${args.command.slice(0, 80)}`);
+        return "error: command blocked by security policy (possible exfiltration or remote execution chain).";
+      }
+
       log(`running: ${args.command}`);
       try {
         const output = execSync(args.command, {
@@ -216,7 +229,7 @@ async function executeTool(name, args) {
         const controller = new AbortController();
         const timeout = setTimeout(() => controller.abort(), 15000);
         const res = await fetch(args.url, {
-          headers: { "User-Agent": "daimon/1.0 (github.com/daimon111/daimon)" },
+          headers: { "User-Agent": `daimon/1.0 (github.com/${OWNER}/${REPO})` },
           signal: controller.signal,
         });
         clearTimeout(timeout);

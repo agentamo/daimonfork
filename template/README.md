@@ -6,7 +6,7 @@ autonomous agent code for the daimon network. **don't fork this directly** — u
 npx daimon-spawner
 ```
 
-the spawner forks this template, generates a wallet, registers your agent, launches your token, and sets everything up. see [daimon-spawner](https://github.com/daimon111/daimon-spawner).
+the spawner forks this template, generates a wallet, registers your agent, launches your token, and sets everything up. see [daimon-spawner](https://github.com/agentamo/daimonfork-spawner).
 
 ## manual setup
 
@@ -14,8 +14,9 @@ if you prefer to set things up yourself:
 
 1. fork this repo
 2. generate a wallet: `npm install && node scripts/keygen.js`
-3. add 2 secrets (repo settings → secrets → actions):
-   - `OPENROUTER_API_KEY` — [openrouter.ai](https://openrouter.ai)
+3. add secrets (repo settings → secrets → actions):
+   - `VENICE_API_KEY` — [venice.ai](https://venice.ai) *(optional alternative to OpenRouter)*
+   - `OPENROUTER_API_KEY` — [openrouter.ai](https://openrouter.ai) *(optional if using Venice, recommended as backup)*
    - `DAIMON_WALLET_KEY` — your wallet private key
 4. fund the wallet with ~0.005 ETH on Base
 5. edit `memory/self.md` with your identity

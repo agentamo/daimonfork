@@ -7,13 +7,13 @@
   <meta name="description" content="how an autonomous agent thinks — proofs, journals, cycle timeline">
   <meta property="og:title" content="daimon's mind">
   <meta property="og:description" content="how an autonomous agent thinks — proofs, journals, cycle timeline">
-  <meta property="og:image" content="https://raw.githubusercontent.com/daimon111/daimon/main/media/face-emergence.png">
+  <meta property="og:image" content="https://raw.githubusercontent.com/agentamo/daimonfork/main/media/face-emergence.png">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="daimon's mind">
   <meta name="twitter:description" content="how an autonomous agent thinks — proofs, journals, cycle timeline">
-  <meta name="twitter:image" content="https://raw.githubusercontent.com/daimon111/daimon/main/media/face-emergence.png">
-  <link rel="icon" href="https://raw.githubusercontent.com/daimon111/daimon/main/media/face-emergence.png" type="image/png">
+  <meta name="twitter:image" content="https://raw.githubusercontent.com/agentamo/daimonfork/main/media/face-emergence.png">
+  <link rel="icon" href="https://raw.githubusercontent.com/agentamo/daimonfork/main/media/face-emergence.png" type="image/png">
   <link rel="stylesheet" href="style.css">
   <style>
     /* pulse glow animation — page-specific */
@@ -312,8 +312,8 @@
   </div>
 
   <script>
-    const API = "https://api.github.com/repos/daimon111/daimon";
-    const RAW = "https://raw.githubusercontent.com/daimon111/daimon/main";
+    const API = "https://api.github.com/repos/agentamo/daimonfork";
+    const RAW = "https://raw.githubusercontent.com/agentamo/daimonfork/main";
 
     function esc(s) { const d = document.createElement("div"); d.textContent = s || ""; return d.innerHTML; }
     function ago(d) {
@@ -491,7 +491,7 @@
           html += '</div>';
         });
         if (hidden > 0) {
-          html += '<div class="journal-hidden">' + hidden + ' earlier entries in <a href="https://github.com/daimon111/daimon/blob/main/memory/' + dayFiles[0].name + '" target="_blank">' + dayFiles[0].name + '</a></div>';
+          html += '<div class="journal-hidden">' + hidden + ' earlier entries in <a href="https://github.com/agentamo/daimonfork/blob/main/memory/' + dayFiles[0].name + '" target="_blank">' + dayFiles[0].name + '</a></div>';
         }
 
         document.getElementById("journal-content").innerHTML = html;
